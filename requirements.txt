@@ -6,7 +6,7 @@ chardet==4.0.0
 click==7.1.2
 cycler==0.10.0
 Cython==0.29.21
-Django==3.1.8
+Django==4.2.30
 django-crispy-forms==1.10.0
 django-pandas==0.6.2
 face-recognition-models==0.3.0
@@ -27,7 +27,7 @@ mediapipe==0.10.11
 numpy==1.19.3
 opencv-python==4.4.0.46
 pandas==1.1.5
-Pillow==10.3.0
+Pillow==12.2.0
 pyparsing==2.4.7
 python-dateutil==2.8.1
 regex==2020.11.13
