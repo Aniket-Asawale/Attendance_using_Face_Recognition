@@ -53,7 +53,7 @@ def create_dataset(username):
 	if not re.fullmatch(r'[A-Za-z0-9_-]+', username_value):
 		raise ValueError("Invalid username for dataset path")
 	id = username_value
-	base_directory = os.path.normpath('face_recognition_data/training_dataset')
+	base_directory = os.path.normpath(os.path.join(BASE_DIR, 'face_recognition_data', 'training_dataset'))
 	directory = os.path.normpath(os.path.join(base_directory, id))
 	if os.path.commonpath([base_directory, directory]) != base_directory:
 		raise ValueError("Invalid username for dataset path")
