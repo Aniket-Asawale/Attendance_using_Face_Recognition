@@ -48,11 +48,14 @@ def username_present(username):
 
 
 def create_dataset(username):
-	id = username
+	id = os.path.basename(str(username))
+	base_directory = os.path.normpath('face_recognition_data/training_dataset')
+	directory = os.path.normpath(os.path.join(base_directory, id))
+	if os.path.commonpath([base_directory, directory]) != base_directory:
+		raise ValueError("Invalid username for dataset path")
 	#checks if user exist logic --
-	if(os.path.exists('face_recognition_data/training_dataset/{}/'.format(id))==False):
-		os.makedirs('face_recognition_data/training_dataset/{}/'.format(id))
-	directory='face_recognition_data/training_dataset/{}/'.format(id)
+	if(os.path.exists(directory)==False):
+		os.makedirs(directory)
 	#initialize face detection and shape predictor --
 	detector = dlib.get_frontal_face_detector()
 	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
