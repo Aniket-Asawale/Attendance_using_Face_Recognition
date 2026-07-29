@@ -12,6 +12,7 @@ from imutils.face_utils import FaceAligner
 import time
 from attendance_system_facial_recognition.settings import BASE_DIR
 import os
+import re
 import face_recognition
 from face_recognition.face_recognition_cli import image_files_in_folder
 import pickle
@@ -48,11 +49,16 @@ def username_present(username):
 
 
 def create_dataset(username):
-	id = username
+	username = str(username).strip()
+	if not re.fullmatch(r"[A-Za-z0-9_-]+", username):
+		raise ValueError("Invalid username for dataset path")
+	base_directory = os.path.realpath(os.path.join(BASE_DIR, 'face_recognition_data', 'training_dataset'))
+	directory = os.path.realpath(os.path.join(base_directory, username))
+	if os.path.commonpath([base_directory, directory]) != base_directory:
+		raise ValueError("Invalid username for dataset path")
 	#checks if user exist logic --
-	if(os.path.exists('face_recognition_data/training_dataset/{}/'.format(id))==False):
-		os.makedirs('face_recognition_data/training_dataset/{}/'.format(id))
-	directory='face_recognition_data/training_dataset/{}/'.format(id)
+	if(os.path.exists(directory)==False):
+		os.makedirs(directory)
 	#initialize face detection and shape predictor --
 	detector = dlib.get_frontal_face_detector()
 	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
@@ -74,7 +80,7 @@ def create_dataset(username):
 			if face is None:
 				print("face is none")
 				continue
-			cv2.imwrite(directory+'/'+str(sampleNum)+'.jpg'	, face_aligned)
+			cv2.imwrite(os.path.join(directory, str(sampleNum) + '.jpg')	, face_aligned)
 			face_aligned = imutils.resize(face_aligned ,width = 400)
 			cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),1)
 			cv2.waitKey(1)
